@@ -45,13 +45,13 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 OPTION(USE_INSTALLED_COMMONAPI "Set to OFF to use the local (build tree) version of CommonAPI" ON)
 message(STATUS "USE_INSTALLED_COMMONAPI is set to value: ${USE_INSTALLED_COMMONAPI}")
 
-if ("${USE_INSTALLED_COMMONAPI}" STREQUAL "ON")
-    FIND_PACKAGE(CommonAPI 3.2.0 REQUIRED CONFIG NO_CMAKE_PACKAGE_REGISTRY)
-    FIND_PACKAGE(CommonAPI-DBus 3.2.0 REQUIRED CONFIG NO_CMAKE_PACKAGE_REGISTRY)
-else()
-    FIND_PACKAGE(CommonAPI 3.2.0 REQUIRED CONFIG NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
-    FIND_PACKAGE(CommonAPI-DBus 3.2.0 REQUIRED CONFIG NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
-endif()
+# if ("${USE_INSTALLED_COMMONAPI}" STREQUAL "ON")
+#     FIND_PACKAGE(CommonAPI 3.2.0 REQUIRED CONFIG NO_CMAKE_PACKAGE_REGISTRY)
+#     # FIND_PACKAGE(CommonAPI-DBus 3.2.0 REQUIRED CONFIG NO_CMAKE_PACKAGE_REGISTRY)
+# else()
+#     FIND_PACKAGE(CommonAPI 3.2.0 REQUIRED CONFIG NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
+#     # FIND_PACKAGE(CommonAPI-DBus 3.2.0 REQUIRED CONFIG NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
+# endif()
 
 message(STATUS "CommonAPI_CONSIDERED_CONFIGS: ${CommonAPI_CONSIDERED_CONFIGS}")
 message(STATUS "COMMONAPI_INCLUDE_DIRS: ${COMMONAPI_INCLUDE_DIRS}")
@@ -74,18 +74,18 @@ if (MSVC)
         message (FATAL_ERROR "DBus_DIR not set! Cannot continue.")
     endif ()
 else()
-    pkg_check_modules(DBus REQUIRED dbus-1>=1.4)
+    # pkg_check_modules(DBus REQUIRED dbus-1>=1.4)
 endif()
 
 # SOME/IP
-find_package (CommonAPI-SomeIP 3.2.0 REQUIRED)
+# find_package (CommonAPI-SomeIP 3.2.0 REQUIRED)
 find_package (vsomeip3 3.1.0 REQUIRED)
 
 # Source Files
 set(PRJ_SRC_PATH src)
 set(PRJ_SRC_GEN_PATH src-gen)
 set(PRJ_SRC_GEN_COMMONAPI_PATH ${PRJ_SRC_GEN_PATH}/core/v0/commonapi/examples)
-set(PRJ_SRC_GEN_COMMONAPI_DBUS_PATH ${PRJ_SRC_GEN_PATH}/dbus/v0/commonapi/examples)
+# set(PRJ_SRC_GEN_COMMONAPI_DBUS_PATH ${PRJ_SRC_GEN_PATH}/dbus/v0/commonapi/examples)
 set(PRJ_SRC_GEN_COMMONAPI_SOMEIP_PATH ${PRJ_SRC_GEN_PATH}/someip/v0/commonapi/examples)
 
 set(PRJ_NAME_CLIENT ${PRJ_NAME}Client)
@@ -102,41 +102,40 @@ set(PRJ_SERVICE_SRCS ${PRJ_SRC_PATH}/${PRJ_NAME_SERVICE}.cpp ${PRJ_SRC_PATH}/${P
 find_package( Boost 1.54 COMPONENTS system thread log REQUIRED )
 include_directories( ${Boost_INCLUDE_DIR} )
 
-# DBus library
-FILE(GLOB PRJ_DBUS_LIB_SRCS ${PRJ_SRC_GEN_COMMONAPI_DBUS_PATH}/*cpp)
+# # DBus library
+# FILE(GLOB PRJ_DBUS_LIB_SRCS ${PRJ_SRC_GEN_COMMONAPI_DBUS_PATH}/*cpp)
 
 # SOME/IP library
 FILE(GLOB PRJ_SOMEIP_LIB_SRCS ${PRJ_SRC_GEN_COMMONAPI_SOMEIP_PATH}/*cpp)
 
 # Paths
-OPTION(USE_INSTALLED_DBUS "Set to OFF to use the local (patched) version of dbus" ON)
-message(STATUS "USE_INSTALLED_DBUS is set to value: ${USE_INSTALLED_DBUS}")
+# OPTION(USE_INSTALLED_DBUS "Set to OFF to use the local (patched) version of dbus" ON)
+# message(STATUS "USE_INSTALLED_DBUS is set to value: ${USE_INSTALLED_DBUS}")
 
 include_directories(
     src-gen/core
-    src-gen/dbus
+    # src-gen/dbus
     src-gen/someip
     ${COMMONAPI_INCLUDE_DIRS}
-    ${COMMONAPI_DBUS_INCLUDE_DIRS}
+    # ${COMMONAPI_DBUS_INCLUDE_DIRS}
     ${COMMONAPI_SOMEIP_INCLUDE_DIRS}
-    ${DBus_INCLUDE_DIRS}
+    # ${DBus_INCLUDE_DIRS}
     ${VSOMEIP_INCLUDE_DIRS}
 )
 
 if ("${USE_INSTALLED_DBUS}" STREQUAL "ON")
 link_directories(
     ${COMMONAPI_LIBDIR}
-    ${COMMONAPI_DBUS_LIBDIR}
+    # ${COMMONAPI_DBUS_LIBDIR}
     ${COMMONAPI_SOMEIP_CMAKE_DIR}/build
-    ${DBus_LIBRARY_DIRS}
     ${Boost_LIBRARY_DIR}
 )
 else()
 link_directories(
     ${COMMONAPI_LIBDIR}
-    ${COMMONAPI_DBUS_LIBDIR}
+    # ${COMMONAPI_DBUS_LIBDIR}
     ${COMMONAPI_SOMEIP_CMAKE_DIR}/build
-    ${DBus_INCLUDE_DIRS}/dbus/.libs
+    # ${DBus_INCLUDE_DIRS}/dbus/.libs
     ${Boost_LIBRARY_DIR}
 )
 endif()
@@ -155,9 +154,9 @@ target_link_libraries(${PRJ_NAME_CLIENT} ${LINK_LIBRARIES})
 add_executable(${PRJ_NAME_SERVICE} ${PRJ_SERVICE_SRCS})
 target_link_libraries(${PRJ_NAME_SERVICE} ${LINK_LIBRARIES})
 
-# Build DBus library
-add_library (${PRJ_NAME}-dbus SHARED ${PRJ_DBUS_LIB_SRCS})
-target_link_libraries(${PRJ_NAME}-dbus CommonAPI-DBus)
+# # Build DBus library
+# add_library (${PRJ_NAME}-dbus SHARED ${PRJ_DBUS_LIB_SRCS})
+# target_link_libraries(${PRJ_NAME}-dbus CommonAPI-DBus)
 
 # Build SOME/IP library
 add_library (${PRJ_NAME}-someip SHARED ${PRJ_SOMEIP_LIB_SRCS})
