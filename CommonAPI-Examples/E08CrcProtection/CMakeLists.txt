@@ -45,11 +45,11 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 OPTION(USE_INSTALLED_COMMONAPI "Set to OFF to use the local (build tree) version of CommonAPI" ON)
 message(STATUS "USE_INSTALLED_COMMONAPI is set to value: ${USE_INSTALLED_COMMONAPI}")
 
-if ("${USE_INSTALLED_COMMONAPI}" STREQUAL "ON")
-    FIND_PACKAGE(CommonAPI 3.2.0 REQUIRED CONFIG NO_CMAKE_PACKAGE_REGISTRY)
-else()
-    FIND_PACKAGE(CommonAPI 3.2.0 REQUIRED CONFIG NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
-endif()
+# if ("${USE_INSTALLED_COMMONAPI}" STREQUAL "ON")
+#     FIND_PACKAGE(CommonAPI 3.2.0 REQUIRED CONFIG NO_CMAKE_PACKAGE_REGISTRY)
+# else()
+#     FIND_PACKAGE(CommonAPI 3.2.0 REQUIRED CONFIG NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
+# endif()
 
 message(STATUS "CommonAPI_CONSIDERED_CONFIGS: ${CommonAPI_CONSIDERED_CONFIGS}")
 message(STATUS "COMMONAPI_INCLUDE_DIRS: ${COMMONAPI_INCLUDE_DIRS}")
@@ -59,7 +59,7 @@ include(FindPkgConfig)
 ###############################################################################
 
 # SOME/IP
-find_package (CommonAPI-SomeIP 3.2.0 REQUIRED)
+# find_package (CommonAPI-SomeIP 3.2.0 REQUIRED)
 find_package (vsomeip3 3.2.0 REQUIRED)
 
 # Source Files
